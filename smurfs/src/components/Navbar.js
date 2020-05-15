@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
-import {SmurfContext} from '../contexts/index'
+import React, { useContext } from 'react';
+import { SmurfContext } from '../contexts/index';
 
 const Navbar = () => {
 
-  const { smurfs, setSmurfs } = useContext(SmurfContext)
+  const { smurfs } = useContext(SmurfContext)
   
   return (
     <div className="navbar">

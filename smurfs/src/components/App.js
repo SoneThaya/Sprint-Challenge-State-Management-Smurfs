@@ -9,13 +9,11 @@ import { SmurfContext } from '../contexts/index'
 
 import axios from 'axios'
 
-const url = 'http://localhost:3333/smurfs';
+const url = 'http://localhost:3333/smurfs/';
 export default function App() {
   const [smurfs, setSmurfs] = useState([])
  
   // url for GET and POST requests
-
-
 const getSmurfs = () => {
   axios.get(url)
     .then(res => {
@@ -32,8 +30,19 @@ const getSmurfs = () => {
     axios
       .post(url, smurf)
       .then(res => {
-        console.log(res)
+        console.log(res.data)
         setSmurfs([...smurfs, smurf])
+      })
+      .catch(err => console.log(err))
+  }
+
+  const deleteSmurf = id => {
+    const removedSmurf = smurfs.filter(item => item.id !== id)
+    axios
+      .delete(url + id)
+      .then(res => {
+        console.log(res)
+        setSmurfs([...removedSmurf])
       })
       .catch(err => console.log(err))
   }
@@ -45,25 +54,18 @@ const getSmurfs = () => {
 
   const [newSmurf, setNewSmurf] = useState({name: '', height: '', age: '', id: ''})
   const inputChange = e => {
-    
     setNewSmurf({ ...newSmurf, [e.target.name]: e.target.value })
-  }
-
-  const removeSmurf = id => {
-    const removedSmurf = smurfs.filter(item => item.id !== id)
-    console.log(removedSmurf)
-    postSmurf(removedSmurf)
   }
 
     return (
       <div className="App">
         
-
-        <SmurfContext.Provider value={{smurfs, getSmurfs, postSmurf, inputChange, addSmurf, removeSmurf }}>
+        <SmurfContext.Provider value={{smurfs, getSmurfs, postSmurf, inputChange, addSmurf, deleteSmurf }}>
           <Navbar />
           <AddSmurf />
           <Smurf />
         </SmurfContext.Provider>
+
       </div>
     );
   
